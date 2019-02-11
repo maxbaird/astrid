@@ -1,8 +1,8 @@
 package blitz
 
 import (
-	"blitzkrieg/board"
-	"blitzkrieg/tile"
+	"astrid/board"
+	"astrid/tile"
 )
 
 //Blitz ...

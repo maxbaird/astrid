@@ -1,7 +1,7 @@
 package board
 
 import (
-	"blitzkrieg/tile"
+	"astrid/tile"
 	"fmt"
 )
 

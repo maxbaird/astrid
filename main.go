@@ -2,7 +2,7 @@
 package main
 
 import (
-	"blitzkrieg/blitz"
+	"astrid/blitz"
 )
 
 func main() {
