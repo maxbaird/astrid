@@ -68,51 +68,35 @@ func (tile *Tile) SetPaths(d dimension.Dimension, t []Tile) {
 	SWIdx := idx + (width - 1)
 	NWIdx := idx - (width + 1)
 
-	if NIdx < 0 {
-		tile.N = nil
-	} else {
+	if !(NIdx < 0) {
 		tile.N = &t[NIdx]
 	}
 
-	if Y+1 >= height {
-		tile.S = nil
-	} else {
+	if !(Y+1 >= height) {
 		tile.S = &t[SIdx]
 	}
 
-	if X+1 >= width {
-		tile.E = nil
-	} else {
+	if !(X+1 >= width) {
 		tile.E = &t[EIdx]
 	}
 
-	if X-1 < 0 {
-		tile.W = nil
-	} else {
+	if !(X-1 < 0) {
 		tile.W = &t[WIdx]
 	}
 
-	if NIdx < 0 || X+1 >= width {
-		tile.NE = nil
-	} else {
+	if !(NIdx < 0 || X+1 >= width) {
 		tile.NE = &t[NEIdx]
 	}
 
-	if Y+1 >= height || X+1 >= width {
-		tile.SE = nil
-	} else {
+	if !(Y+1 >= height || X+1 >= width) {
 		tile.SE = &t[SEIdx]
 	}
 
-	if Y+1 >= height || X-1 < 0 {
-		tile.SW = nil
-	} else {
+	if !(Y+1 >= height || X-1 < 0) {
 		tile.SW = &t[SWIdx]
 	}
 
-	if NIdx < 0 || X-1 < 0 {
-		tile.NW = nil
-	} else {
+	if !(NIdx < 0 || X-1 < 0) {
 		tile.NW = &t[NWIdx]
 	}
 }
