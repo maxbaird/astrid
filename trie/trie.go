@@ -12,11 +12,6 @@ func charToIndex(c rune) uint {
 	return uint(c) - uint('a')
 }
 
-//New ...
-func New() *Trie {
-	return &Trie{}
-}
-
 //Insert ...
 func (trie *Trie) Insert(letters string) {
 	length := len(letters)

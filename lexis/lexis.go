@@ -3,10 +3,11 @@ package lexis
 import (
 	"astrid/trie"
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 )
+
+var lexisTrie trie.Trie
 
 //LoadLexis ...
 func LoadLexis() {
@@ -16,26 +17,20 @@ func LoadLexis() {
 		log.Fatal(err)
 	}
 
-	trie := trie.New()
+	reader := bufio.NewScanner(file)
 
-	fs := bufio.NewScanner(file)
-
-	for fs.Scan() {
-		txt := fs.Text()
-		trie.Insert(txt)
+	for reader.Scan() {
+		lexisTrie.Insert(reader.Text())
 	}
 
-	s := "asshat"
-	if trie.Has(s) {
-		fmt.Printf("Found %s!\n", s)
-	} else {
-		fmt.Printf("%s not found :-(\n", s)
+	if reader.Err() != nil {
+		log.Fatal(err)
 	}
+
 	file.Close()
 }
 
 //IsWord ...
 func IsWord(letters string) bool {
-	fmt.Print(letters)
-	return true
+	return lexisTrie.Has(letters)
 }
