@@ -5,12 +5,15 @@ import (
 	"astrid/tile"
 )
 
+const height uint16 = 4
+const width uint16 = 4
+
 //Blitz ...
 func Blitz() {
-	board := board.Board{}
-	tiles := tile.MakeTiles(16)
+	board := new(board.Board)
+	tiles := make([]tile.Tile, height*width)
 
-	board.MakeBoard(tiles, 4, 4)
+	board.MakeBoard(tiles, height, width)
 	board.PlaceLetters("abcdefghijklmnop")
 	board.PrintBoard()
 }

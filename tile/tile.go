@@ -25,30 +25,6 @@ type Tile struct {
 	NW         *Tile
 }
 
-//MakeTiles creates, initializes and returns n tiles
-func MakeTiles(n uint16) []Tile {
-	tiles := make([]Tile, n)
-
-	var i uint16
-
-	for i = 0; i < n; i++ {
-		tiles[i].ID = i
-		tiles[i].Letter = 0
-		tiles[i].N = nil
-		tiles[i].S = nil
-		tiles[i].E = nil
-		tiles[i].W = nil
-		tiles[i].NE = nil
-		tiles[i].SE = nil
-		tiles[i].SW = nil
-		tiles[i].NW = nil
-		tiles[i].Coordinate.X = 0
-		tiles[i].Coordinate.Y = 0
-	}
-
-	return tiles
-}
-
 //SetPaths ...
 func (tile *Tile) SetPaths(d dimension.Dimension, t []Tile) {
 	height := int(d.Height)
@@ -58,6 +34,7 @@ func (tile *Tile) SetPaths(d dimension.Dimension, t []Tile) {
 	Y := int(tile.Coordinate.Y)
 
 	idx := (height * Y) + X //Index of tile
+	tile.ID = uint16(idx)
 
 	NIdx := idx - width
 	SIdx := idx + height
