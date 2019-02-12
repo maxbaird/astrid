@@ -2,6 +2,7 @@ package blitz
 
 import (
 	"astrid/board"
+	"astrid/lexis"
 	"astrid/tile"
 )
 
@@ -16,4 +17,5 @@ func Blitz() {
 	board.MakeBoard(tiles, height, width)
 	board.PlaceLetters("abcdefghijklmnop")
 	board.PrintBoard()
+	lexis.LoadLexis()
 }
