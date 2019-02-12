@@ -2,6 +2,7 @@ package blitz
 
 import (
 	"astrid/board"
+	"astrid/finder"
 	"astrid/lexis"
 	"astrid/tile"
 )
@@ -18,4 +19,5 @@ func Blitz() {
 	board.PlaceLetters("abcdefghijklmnop")
 	board.PrintBoard()
 	lexis.LoadLexis()
+	finder.FindWords(board)
 }

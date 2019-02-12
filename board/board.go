@@ -8,7 +8,7 @@ import (
 
 //Board holds all tiles
 type Board struct {
-	tiles     []tile.Tile
+	Tiles     []tile.Tile
 	dimension dimension.Dimension
 }
 
@@ -16,7 +16,7 @@ type Board struct {
 func (board *Board) MakeBoard(tiles []tile.Tile, height uint16, width uint16) {
 	board.dimension.Height = height
 	board.dimension.Width = width
-	board.tiles = tiles
+	board.Tiles = tiles
 
 	var i uint16
 	var j uint16
@@ -24,9 +24,9 @@ func (board *Board) MakeBoard(tiles []tile.Tile, height uint16, width uint16) {
 	for i = 0; i < height; i++ {
 		for j = 0; j < width; j++ {
 			idx := (i * width) + j
-			board.tiles[idx].Coordinate.X = j
-			board.tiles[idx].Coordinate.Y = i
-			board.tiles[idx].SetPaths(board.dimension, board.tiles)
+			board.Tiles[idx].Coordinate.X = j
+			board.Tiles[idx].Coordinate.Y = i
+			board.Tiles[idx].SetPaths(board.dimension, board.Tiles)
 		}
 	}
 }
@@ -36,7 +36,7 @@ func (board *Board) PlaceLetters(letters string) {
 	var i uint16
 
 	for i = 0; i < board.GetBoardSize(); i++ {
-		board.tiles[i].Letter = rune(letters[i])
+		board.Tiles[i].Letter = rune(letters[i])
 	}
 }
 
@@ -51,7 +51,7 @@ func (board *Board) PrintBoard() {
 	var i uint16
 
 	for i = 0; i < board.GetBoardSize(); i++ {
-		board.tiles[i].PrintTile()
+		board.Tiles[i].PrintTile()
 		fmt.Print("\n")
 	}
 }
