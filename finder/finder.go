@@ -5,6 +5,7 @@ import (
 	"astrid/lexis"
 	"astrid/tile"
 	"fmt"
+	"sync"
 )
 
 var finderBoard *board.Board
@@ -29,8 +30,9 @@ func canMove(tile *tile.Tile, tilePath *path) bool {
 	return true
 }
 
-func traverse(tile *tile.Tile, letters []rune, p *path, depth int) {
-	if depth == 16 {
+func traverse(tile *tile.Tile, letters []rune, p *path, depth int, wg *sync.WaitGroup) {
+	defer wg.Done()
+	if depth == 9 {
 		return
 	}
 
@@ -63,28 +65,36 @@ func traverse(tile *tile.Tile, letters []rune, p *path, depth int) {
 	}
 
 	if canMove(tile.N, tilePath) {
-		traverse(tile.N, str, tilePath, depth+1)
+		wg.Add(1)
+		traverse(tile.N, str, tilePath, depth+1, wg)
 	}
 	if canMove(tile.S, tilePath) {
-		traverse(tile.S, str, tilePath, depth+1)
+		wg.Add(1)
+		traverse(tile.S, str, tilePath, depth+1, wg)
 	}
 	if canMove(tile.E, tilePath) {
-		traverse(tile.E, str, tilePath, depth+1)
+		wg.Add(1)
+		traverse(tile.E, str, tilePath, depth+1, wg)
 	}
 	if canMove(tile.W, tilePath) {
-		traverse(tile.W, str, tilePath, depth+1)
+		wg.Add(1)
+		traverse(tile.W, str, tilePath, depth+1, wg)
 	}
 	if canMove(tile.NE, tilePath) {
-		traverse(tile.NE, str, tilePath, depth+1)
+		wg.Add(1)
+		traverse(tile.NE, str, tilePath, depth+1, wg)
 	}
 	if canMove(tile.SE, tilePath) {
-		traverse(tile.SE, str, tilePath, depth+1)
+		wg.Add(1)
+		traverse(tile.SE, str, tilePath, depth+1, wg)
 	}
 	if canMove(tile.SW, tilePath) {
-		traverse(tile.SW, str, tilePath, depth+1)
+		wg.Add(1)
+		traverse(tile.SW, str, tilePath, depth+1, wg)
 	}
 	if canMove(tile.NW, tilePath) {
-		traverse(tile.NW, str, tilePath, depth+1)
+		wg.Add(1)
+		traverse(tile.NW, str, tilePath, depth+1, wg)
 	}
 }
 
@@ -93,8 +103,11 @@ func FindWords(board *board.Board) {
 	finderBoard = board
 
 	var i uint16
+	var wg sync.WaitGroup
 
 	for i = 0; i < finderBoard.GetBoardSize(); i++ {
-		traverse(&finderBoard.Tiles[i], nil, nil, 0)
+		wg.Add(1)
+		go traverse(&finderBoard.Tiles[i], nil, nil, 0, &wg)
 	}
+	wg.Wait()
 }
