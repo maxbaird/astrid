@@ -2,9 +2,9 @@ package finder
 
 import (
 	"astrid/board"
-	"astrid/lexis"
+	//"astrid/lexis"
 	"astrid/tile"
-	"fmt"
+	//"fmt"
 	"sync"
 )
 
@@ -20,10 +20,8 @@ func canMove(tile *tile.Tile, tilePath *path) bool {
 		return false
 	}
 
-	var i uint16
-
-	for i = 0; i < finderBoard.GetBoardSize(); i++ {
-		if tilePath.traversePath[i] == int(tile.ID) {
+	for _, x := range tilePath.traversePath {
+		if x+1 == int(tile.ID) {
 			return false
 		}
 	}
@@ -39,13 +37,13 @@ func traverse(tile *tile.Tile, letters []rune, p *path, depth int, wg *sync.Wait
 		return
 	}
 
-	str := make([]rune, 16)
+	str := make([]rune, 9)
 	tilePath := &path{}
 	tilePath.traversePath = make([]int, finderBoard.GetBoardSize())
 
-	for i := range tilePath.traversePath {
-		tilePath.traversePath[i] = -1
-	}
+	//for i := range tilePath.traversePath {
+	//	tilePath.traversePath[i] = -1
+	//}
 
 	if p == nil { //Will be nil for initial call
 		tilePath.root = int(tile.ID)
@@ -61,11 +59,11 @@ func traverse(tile *tile.Tile, letters []rune, p *path, depth int, wg *sync.Wait
 		str[0] = tile.Letter //Handle initial traversal call
 	}
 
-	word := string(str[0 : depth+1])
+	//word := string(str[0 : depth+1])
 
-	if lexis.IsWord(word) {
-		fmt.Println(word)
-	}
+	//if lexis.IsWord(word) {
+	//	fmt.Println(word)
+	//}
 
 	if canMove(tile.N, tilePath) {
 		traverse(tile.N, str, tilePath, depth+1, nil)

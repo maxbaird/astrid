@@ -34,7 +34,7 @@ func (tile *Tile) SetPaths(d dimension.Dimension, t []Tile) {
 	Y := int(tile.Coordinate.Y)
 
 	idx := (height * Y) + X //Index of tile
-	tile.ID = uint16(idx)
+	tile.ID = uint16(idx) + 1
 
 	NIdx := idx - width
 	SIdx := idx + height
