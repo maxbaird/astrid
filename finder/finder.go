@@ -31,7 +31,10 @@ func canMove(tile *tile.Tile, tilePath *path) bool {
 }
 
 func traverse(tile *tile.Tile, letters []rune, p *path, depth int, wg *sync.WaitGroup) {
-	defer wg.Done()
+	if wg != nil {
+		defer wg.Done()
+	}
+
 	if depth == 9 {
 		return
 	}
@@ -65,36 +68,28 @@ func traverse(tile *tile.Tile, letters []rune, p *path, depth int, wg *sync.Wait
 	}
 
 	if canMove(tile.N, tilePath) {
-		wg.Add(1)
-		traverse(tile.N, str, tilePath, depth+1, wg)
+		traverse(tile.N, str, tilePath, depth+1, nil)
 	}
 	if canMove(tile.S, tilePath) {
-		wg.Add(1)
-		traverse(tile.S, str, tilePath, depth+1, wg)
+		traverse(tile.S, str, tilePath, depth+1, nil)
 	}
 	if canMove(tile.E, tilePath) {
-		wg.Add(1)
-		traverse(tile.E, str, tilePath, depth+1, wg)
+		traverse(tile.E, str, tilePath, depth+1, nil)
 	}
 	if canMove(tile.W, tilePath) {
-		wg.Add(1)
-		traverse(tile.W, str, tilePath, depth+1, wg)
+		traverse(tile.W, str, tilePath, depth+1, nil)
 	}
 	if canMove(tile.NE, tilePath) {
-		wg.Add(1)
-		traverse(tile.NE, str, tilePath, depth+1, wg)
+		traverse(tile.NE, str, tilePath, depth+1, nil)
 	}
 	if canMove(tile.SE, tilePath) {
-		wg.Add(1)
-		traverse(tile.SE, str, tilePath, depth+1, wg)
+		traverse(tile.SE, str, tilePath, depth+1, nil)
 	}
 	if canMove(tile.SW, tilePath) {
-		wg.Add(1)
-		traverse(tile.SW, str, tilePath, depth+1, wg)
+		traverse(tile.SW, str, tilePath, depth+1, nil)
 	}
 	if canMove(tile.NW, tilePath) {
-		wg.Add(1)
-		traverse(tile.NW, str, tilePath, depth+1, wg)
+		traverse(tile.NW, str, tilePath, depth+1, nil)
 	}
 }
 
