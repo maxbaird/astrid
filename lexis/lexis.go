@@ -20,7 +20,10 @@ func LoadLexis() {
 	reader := bufio.NewScanner(file)
 
 	for reader.Scan() {
-		lexisTrie.Insert(reader.Text())
+		txt := reader.Text()
+		if len(txt) <= 9 {
+			lexisTrie.Insert(txt)
+		}
 	}
 
 	if reader.Err() != nil {
