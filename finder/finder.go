@@ -8,10 +8,9 @@ import (
 	"sync"
 )
 
-var finderBoard *board.Board
-
 type path struct {
 	root         int
+	letters      []rune
 	traversePath map[int]struct{}
 }
 
@@ -38,12 +37,12 @@ func traverse(tile *tile.Tile, letters []rune, p *path, depth int, wg *sync.Wait
 
 	str := make([]rune, 9)
 	tilePath := &path{}
-	tilePath.traversePath = make(map[int]struct{}) //make([]int, finderBoard.GetBoardSize())
+	tilePath.traversePath = make(map[int]struct{})
 
 	if p == nil { //Will be nil for initial call
 		tilePath.root = int(tile.ID)
 	} else {
-		for k, v := range p.traversePath {
+		for k, v := range p.traversePath { //Copy the map
 			tilePath.traversePath[k] = v
 		}
 		tilePath.root = p.root
@@ -90,14 +89,12 @@ func traverse(tile *tile.Tile, letters []rune, p *path, depth int, wg *sync.Wait
 
 //FindWords ...
 func FindWords(board *board.Board) {
-	finderBoard = board
-
-	var i uint16
 	var wg sync.WaitGroup
 
-	for i = 0; i < finderBoard.GetBoardSize(); i++ {
+	for _, tile := range board.Tiles {
 		wg.Add(1)
-		go traverse(&finderBoard.Tiles[i], nil, nil, 0, &wg)
+		go traverse(&tile, nil, nil, 0, &wg)
 	}
+
 	wg.Wait()
 }
