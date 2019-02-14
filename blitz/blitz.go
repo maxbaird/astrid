@@ -16,8 +16,8 @@ func Blitz() {
 	tiles := make([]tile.Tile, height*width)
 
 	board.MakeBoard(tiles, height, width)
-	//board.PlaceLetters("abcdefghijklmnop")
-	board.PlaceLetters("aweridaweonainfe")
+	board.PlaceLetters("abcdefghijklmnop")
+	//board.PlaceLetters("aweridaweonainfe")
 	board.PrintBoard()
 	lexis.LoadLexis()
 	finder.FindWords(board)
