@@ -12,7 +12,7 @@ var finderBoard *board.Board
 
 type path struct {
 	root         int
-	traversePath []int
+	traversePath map[int]struct{}
 }
 
 func canMove(tile *tile.Tile, tilePath *path) bool {
@@ -20,11 +20,10 @@ func canMove(tile *tile.Tile, tilePath *path) bool {
 		return false
 	}
 
-	for _, x := range tilePath.traversePath {
-		if x+1 == int(tile.ID) {
-			return false
-		}
+	if _, ok := tilePath.traversePath[int(tile.ID)]; ok {
+		return false
 	}
+
 	return true
 }
 
@@ -39,16 +38,14 @@ func traverse(tile *tile.Tile, letters []rune, p *path, depth int, wg *sync.Wait
 
 	str := make([]rune, 9)
 	tilePath := &path{}
-	tilePath.traversePath = make([]int, finderBoard.GetBoardSize())
-
-	//for i := range tilePath.traversePath {
-	//	tilePath.traversePath[i] = -1
-	//}
+	tilePath.traversePath = make(map[int]struct{}) //make([]int, finderBoard.GetBoardSize())
 
 	if p == nil { //Will be nil for initial call
 		tilePath.root = int(tile.ID)
 	} else {
-		copy(tilePath.traversePath, p.traversePath)
+		for k, v := range p.traversePath {
+			tilePath.traversePath[k] = v
+		}
 		tilePath.root = p.root
 	}
 
