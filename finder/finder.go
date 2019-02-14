@@ -91,8 +91,9 @@ func traverse(tile *tile.Tile, letters []rune, p *path, depth int, wg *sync.Wait
 func FindWords(board *board.Board) {
 	var wg sync.WaitGroup
 
+	wg.Add(len(board.Tiles))
+
 	for _, tile := range board.Tiles {
-		wg.Add(1)
 		go traverse(&tile, nil, nil, 0, &wg)
 	}
 
