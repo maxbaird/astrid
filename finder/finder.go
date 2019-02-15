@@ -10,90 +10,81 @@ import (
 
 type path struct {
 	root         int
-	depth        int
-	letters      []rune
+	letters      [][]rune
 	traversePath []map[int]struct{}
 }
 
-func canMove(tile *tile.Tile, tilePath *path) bool {
+func canMove(tile *tile.Tile, tilePath *path, depth int) bool {
 	if tile == nil {
 		return false
 	}
 
-	//if tilePath.depth == 9 { //This may not be necessary
-	//	return false
-	//}
-
-	//fmt.Printf("Tile id: %d\n", int(tile.ID))
-	if _, ok := tilePath.traversePath[tilePath.depth][int(tile.ID)]; ok {
+	if _, ok := tilePath.traversePath[depth][int(tile.ID)]; ok {
 		return false
 	}
 
 	return true
 }
 
-func traverse(tile *tile.Tile, p *path, wg *sync.WaitGroup) {
+func traverse(tile *tile.Tile, p []path, pPathIdx int, depth int, wg *sync.WaitGroup) {
 	if wg != nil {
 		defer wg.Done()
 	}
 
-	if p.depth == 9 {
+	if depth == 9 {
 		return
 	}
 
-	//str := make([]rune, 9)
-	//tilePath := &path{}
-	//tilePath.traversePath = make(map[int]struct{})
+	idx := int(tile.ID) - 1
 
-	//if p == nil { //Will be nil for initial call
-	//	tilePath.root = int(tile.ID)
-	//} else {
-	//for k, v := range p.traversePath { //Copy the map
-	//	tilePath.traversePath[k] = v
-	//}
-	//tilePath.root = p.root
-	//}
+	if pPathIdx >= 0 {
+		for k, v := range p[pPathIdx].traversePath[depth-1] {
+			p[idx].traversePath[depth][k] = v
+		}
 
-	//if letters != nil {
-	//copy(str, letters)
-	//fmt.Println(p.root)
-	p.traversePath[p.depth][int(tile.ID)] = struct{}{}
-	//fmt.Println(p.traversePath)
-	p.letters[p.depth] = tile.Letter
-	p.depth++
-	//}
+		copy(p[idx].letters[idx], p[pPathIdx].letters[pPathIdx])
+	}
 
-	word := string(p.letters[0:p.depth])
+	p[idx].traversePath[depth][int(tile.ID)] = struct{}{}
+	//fmt.Printf("idx: %d, depth:%d len: %d\n", idx, depth, len(p[idx].letters))
+	p[idx].letters[idx][depth] = tile.Letter
+	//fmt.Println("After")
+
+	word := string(p[idx].letters[idx][0 : depth+1])
 
 	//fmt.Println(word)
 	if lexis.IsWord(word) {
 		fmt.Println(word)
 	}
 
-	if canMove(tile.N, p) {
-		traverse(tile.N, p, nil)
+	if canMove(tile.N, &p[idx], depth) {
+		traverse(tile.N, p, idx, depth+1, nil)
 	}
-	if canMove(tile.S, p) {
-		traverse(tile.S, p, nil)
+	if canMove(tile.S, &p[idx], depth) {
+		traverse(tile.S, p, idx, depth+1, nil)
 	}
-	if canMove(tile.E, p) {
-		traverse(tile.E, p, nil)
+	if canMove(tile.E, &p[idx], depth) {
+		traverse(tile.E, p, idx, depth+1, nil)
 	}
-	if canMove(tile.W, p) {
-		traverse(tile.W, p, nil)
+	if canMove(tile.W, &p[idx], depth) {
+		traverse(tile.W, p, idx, depth+1, nil)
 	}
-	if canMove(tile.NE, p) {
-		traverse(tile.NE, p, nil)
+	if canMove(tile.NE, &p[idx], depth) {
+		traverse(tile.NE, p, idx, depth+1, nil)
 	}
-	if canMove(tile.SE, p) {
-		traverse(tile.SE, p, nil)
+	if canMove(tile.SE, &p[idx], depth) {
+		traverse(tile.SE, p, idx, depth+1, nil)
 	}
-	if canMove(tile.SW, p) {
-		traverse(tile.SW, p, nil)
+	if canMove(tile.SW, &p[idx], depth) {
+		traverse(tile.SW, p, idx, depth+1, nil)
 	}
-	if canMove(tile.NW, p) {
-		traverse(tile.NW, p, nil)
+	if canMove(tile.NW, &p[idx], depth) {
+		traverse(tile.NW, p, idx, depth+1, nil)
 	}
+}
+
+func doNothing(wg *sync.WaitGroup) {
+	wg.Done()
 }
 
 //FindWords ...
@@ -105,23 +96,27 @@ func FindWords(board *board.Board) {
 	fmt.Printf("Length of P: %d\n", len(p))
 
 	for i := 0; i < 16; i++ {
-		p[i].letters = make([]rune, 9)
-		p[i].traversePath = make([]map[int]struct{}, 9)
+		p[i].letters = make([][]rune, 16)
+		p[i].traversePath = make([]map[int]struct{}, 16)
 
-		for j := 0; j < 9; j++ {
+		for j := 0; j < 16; j++ {
 			p[i].traversePath[j] = make(map[int]struct{})
+			p[i].letters[j] = make([]rune, 9)
 		}
 	}
 
-	wg.Add(len(board.Tiles))
-	//wg.Add(1)
-	//p[0].root = int(board.Tiles[0].ID) - 1
-	//go traverse(&board.Tiles[0], &p[0], &wg)
+	//wg.Add(len(board.Tiles))
+	wg.Add(1)
+	p[0].root = int(board.Tiles[0].ID) - 1
+	//fmt.Println("About to panic")
 
-	for i, tile := range board.Tiles {
-		p[i].root = int(tile.ID) - 1
-		go traverse(&tile, &p[i], &wg)
-	}
+	//fmt.Println(p[0].letters)
+	go traverse(&board.Tiles[0], p, -1, 0, &wg)
+	//go doNothing(&wg)
+	//for i, tile := range board.Tiles {
+	//	p[i].root = int(tile.ID) - 1
+	//	go traverse(&tile, &p[i], &wg)
+	//}
 
 	wg.Wait()
 }
