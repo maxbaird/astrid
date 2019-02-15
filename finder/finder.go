@@ -19,7 +19,7 @@ func canMove(tile *tile.Tile, tilePath *path, depth int) bool {
 		return false
 	}
 
-	if _, ok := tilePath.traversePath[depth][int(tile.ID)]; ok {
+	if _, ok := tilePath.traversePath[depth][int(tile.ID)+depth]; ok {
 		return false
 	}
 
@@ -42,17 +42,20 @@ func traverse(tile *tile.Tile, p []path, pPathIdx int, depth int, wg *sync.WaitG
 			p[idx].traversePath[depth][k] = v
 		}
 
+		//fmt.Printf("Will copy: %s\n", string(p[pPathIdx].letters[pPathIdx]))
 		copy(p[idx].letters[idx], p[pPathIdx].letters[pPathIdx])
 	}
 
-	p[idx].traversePath[depth][int(tile.ID)] = struct{}{}
-	//fmt.Printf("idx: %d, depth:%d len: %d\n", idx, depth, len(p[idx].letters))
+	//fmt.Printf("after copy: %s\n", string(p[idx].letters[idx]))
+
+	p[idx].traversePath[depth][int(tile.ID)+depth] = struct{}{}
 	p[idx].letters[idx][depth] = tile.Letter
-	//fmt.Println("After")
+	//fmt.Printf("after append: %s\n", string(p[idx].letters[idx]))
+	//fmt.Println()
 
 	word := string(p[idx].letters[idx][0 : depth+1])
-
 	//fmt.Println(word)
+
 	if lexis.IsWord(word) {
 		fmt.Println(word)
 	}
@@ -105,18 +108,19 @@ func FindWords(board *board.Board) {
 		}
 	}
 
-	wg.Add(len(board.Tiles))
-	//wg.Add(1)
-	//p[0].root = int(board.Tiles[0].ID) - 1
+	//wg.Add(len(board.Tiles))
+	wg.Add(1)
+	idx := 10
+	p[idx].root = int(board.Tiles[idx].ID) - 1
+	go traverse(&board.Tiles[idx], p, -1, 0, &wg)
 	//fmt.Println("About to panic")
 
 	//fmt.Println(p[0].letters)
-	//go traverse(&board.Tiles[0], p, -1, 0, &wg)
 	//go doNothing(&wg)
-	for i, tile := range board.Tiles {
-		p[i].root = int(tile.ID) - 1
-		go traverse(&tile, p, -1, 0, &wg)
-	}
+	//for i, tile := range board.Tiles {
+	//	p[i].root = int(tile.ID) - 1
+	//	go traverse(&tile, p, -1, 0, &wg)
+	//}
 
 	wg.Wait()
 }
