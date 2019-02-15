@@ -105,18 +105,18 @@ func FindWords(board *board.Board) {
 		}
 	}
 
-	//wg.Add(len(board.Tiles))
-	wg.Add(1)
-	p[0].root = int(board.Tiles[0].ID) - 1
+	wg.Add(len(board.Tiles))
+	//wg.Add(1)
+	//p[0].root = int(board.Tiles[0].ID) - 1
 	//fmt.Println("About to panic")
 
 	//fmt.Println(p[0].letters)
-	go traverse(&board.Tiles[0], p, -1, 0, &wg)
+	//go traverse(&board.Tiles[0], p, -1, 0, &wg)
 	//go doNothing(&wg)
-	//for i, tile := range board.Tiles {
-	//	p[i].root = int(tile.ID) - 1
-	//	go traverse(&tile, &p[i], &wg)
-	//}
+	for i, tile := range board.Tiles {
+		p[i].root = int(tile.ID) - 1
+		go traverse(&tile, p, -1, 0, &wg)
+	}
 
 	wg.Wait()
 }
