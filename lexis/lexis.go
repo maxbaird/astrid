@@ -8,9 +8,14 @@ import (
 )
 
 var lexisTrie trie.Trie
+var initialized bool
 
 //LoadLexis ...
 func LoadLexis() {
+	if initialized {
+		return
+	}
+
 	file, err := os.Open("wordList")
 
 	if err != nil {
@@ -31,9 +36,13 @@ func LoadLexis() {
 	}
 
 	file.Close()
+	initialized = true
 }
 
 //IsWord ...
 func IsWord(letters string) bool {
+	if !initialized {
+		log.Fatal("Lexis not loaded!")
+	}
 	return lexisTrie.Has(letters)
 }

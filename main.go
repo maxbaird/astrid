@@ -3,6 +3,7 @@ package main
 
 import (
 	"astrid/blitz"
+	"astrid/lexis"
 	"flag"
 	"log"
 	"os"
@@ -12,6 +13,9 @@ import (
 
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to `file`")
 var memprofile = flag.String("memprofile", "", "write memory profile to `file`")
+
+const height uint16 = 4
+const width uint16 = 4
 
 func main() {
 	flag.Parse()
@@ -26,7 +30,9 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	blitz.Blitz()
+	lexis.LoadLexis()
+	blitz := blitz.New(height, width)
+	blitz.Start()
 
 	if *memprofile != "" {
 		f, err := os.Create(*memprofile)

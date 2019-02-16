@@ -13,8 +13,9 @@ type Board struct {
 	Size      uint16
 }
 
-//MakeBoard makes the word puzzle board from tiles
-func (board *Board) MakeBoard(tiles []tile.Tile, height uint16, width uint16) {
+//New makes the word puzzle board from tiles
+func New(tiles []tile.Tile, height uint16, width uint16) *Board {
+	board := &Board{}
 	board.dimension.Height = height
 	board.dimension.Width = width
 	board.Size = board.dimension.Height * board.dimension.Width
@@ -31,6 +32,7 @@ func (board *Board) MakeBoard(tiles []tile.Tile, height uint16, width uint16) {
 			board.Tiles[idx].SetPaths(board.dimension, board.Tiles)
 		}
 	}
+	return board
 }
 
 //PlaceLetters places letters onto the board
