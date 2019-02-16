@@ -15,12 +15,12 @@ type path struct {
 	traversePath map[int]struct{}
 }
 
-func canMove(tile *tile.Tile, tilePath *path) bool {
+func canMove(tile *tile.Tile, tp *path) bool {
 	if tile == nil {
 		return false
 	}
 
-	if _, ok := tilePath.traversePath[int(tile.ID)]; ok {
+	if _, ok := tp.traversePath[int(tile.ID)]; ok {
 		return false
 	}
 
@@ -38,54 +38,56 @@ func traverse(tile *tile.Tile, p *path, wg *sync.WaitGroup) {
 		}
 	}
 
-	tilePath := &path{}
-	tilePath.letters = make([]rune, 9)
-	tilePath.traversePath = make(map[int]struct{})
+	tp := &path{}
+	tp.letters = make([]rune, 9)
+	tp.traversePath = make(map[int]struct{})
 
 	if p == nil { //Will be nil on first call
-		tilePath.root = int(tile.ID)
+		tp.root = int(tile.ID)
 	} else {
 		for k, v := range p.traversePath {
-			tilePath.traversePath[k] = v
+			tp.traversePath[k] = v
 		}
-		copy(tilePath.letters, p.letters)
-		tilePath.depth = p.depth
-		tilePath.root = p.root
+		copy(tp.letters, p.letters)
+		tp.depth = p.depth
+		tp.root = p.root
 	}
 
-	tilePath.traversePath[int(tile.ID)] = struct{}{}
-	tilePath.letters[tilePath.depth] = tile.Letter
-	tilePath.depth++
+	// tp.traversePath is a map that does not hold any values
+	// because we are only interested in unique keys
+	tp.traversePath[int(tile.ID)] = struct{}{}
+	tp.letters[tp.depth] = tile.Letter
+	tp.depth++
 
-	word := string(tilePath.letters[0:tilePath.depth])
+	word := string(tp.letters[0:tp.depth])
 
 	if lexis.IsWord(word) {
-		fmt.Printf("%s:[%d]\n", word, tilePath.root)
+		fmt.Printf("%s:[%d]\n", word, tp.root)
 	}
 
-	if canMove(tile.N, tilePath) {
-		traverse(tile.N, tilePath, nil)
+	if canMove(tile.N, tp) {
+		traverse(tile.N, tp, nil)
 	}
-	if canMove(tile.S, tilePath) {
-		traverse(tile.S, tilePath, nil)
+	if canMove(tile.S, tp) {
+		traverse(tile.S, tp, nil)
 	}
-	if canMove(tile.E, tilePath) {
-		traverse(tile.E, tilePath, nil)
+	if canMove(tile.E, tp) {
+		traverse(tile.E, tp, nil)
 	}
-	if canMove(tile.W, tilePath) {
-		traverse(tile.W, tilePath, nil)
+	if canMove(tile.W, tp) {
+		traverse(tile.W, tp, nil)
 	}
-	if canMove(tile.NE, tilePath) {
-		traverse(tile.NE, tilePath, nil)
+	if canMove(tile.NE, tp) {
+		traverse(tile.NE, tp, nil)
 	}
-	if canMove(tile.SE, tilePath) {
-		traverse(tile.SE, tilePath, nil)
+	if canMove(tile.SE, tp) {
+		traverse(tile.SE, tp, nil)
 	}
-	if canMove(tile.SW, tilePath) {
-		traverse(tile.SW, tilePath, nil)
+	if canMove(tile.SW, tp) {
+		traverse(tile.SW, tp, nil)
 	}
-	if canMove(tile.NW, tilePath) {
-		traverse(tile.NW, tilePath, nil)
+	if canMove(tile.NW, tp) {
+		traverse(tile.NW, tp, nil)
 	}
 }
 
@@ -93,12 +95,11 @@ func traverse(tile *tile.Tile, p *path, wg *sync.WaitGroup) {
 func FindWords(board *board.Board) {
 	fmt.Println("Finding...")
 	var wg sync.WaitGroup
+	var i uint16
 
-	numTiles := len(board.Tiles) //TODO make this a const in board
+	wg.Add(int(board.Size))
 
-	wg.Add(numTiles)
-
-	for i := 0; i < numTiles; i++ {
+	for i = 0; i < board.Size; i++ {
 		go traverse(&board.Tiles[i], nil, &wg)
 	}
 

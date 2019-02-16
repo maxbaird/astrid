@@ -10,12 +10,14 @@ import (
 type Board struct {
 	Tiles     []tile.Tile
 	dimension dimension.Dimension
+	Size      uint16
 }
 
 //MakeBoard makes the word puzzle board from tiles
 func (board *Board) MakeBoard(tiles []tile.Tile, height uint16, width uint16) {
 	board.dimension.Height = height
 	board.dimension.Width = width
+	board.Size = board.dimension.Height * board.dimension.Width
 	board.Tiles = tiles
 
 	var i uint16
@@ -35,14 +37,9 @@ func (board *Board) MakeBoard(tiles []tile.Tile, height uint16, width uint16) {
 func (board *Board) PlaceLetters(letters string) {
 	var i uint16
 
-	for i = 0; i < board.GetBoardSize(); i++ {
+	for i = 0; i < board.Size; i++ {
 		board.Tiles[i].Letter = rune(letters[i])
 	}
-}
-
-//GetBoardSize returns the size of the board
-func (board Board) GetBoardSize() uint16 {
-	return board.dimension.Height * board.dimension.Width
 }
 
 //PrintBoard ...
@@ -50,7 +47,7 @@ func (board *Board) PrintBoard() {
 	fmt.Print("Printing board\n")
 	var i uint16
 
-	for i = 0; i < board.GetBoardSize(); i++ {
+	for i = 0; i < board.Size; i++ {
 		board.Tiles[i].PrintTile()
 		fmt.Print("\n")
 	}
