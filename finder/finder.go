@@ -10,23 +10,23 @@ import (
 
 type path struct {
 	root         int
-	letters      [][]rune
-	traversePath []map[int]struct{}
+	letters      []rune
+	traversePath map[int]struct{}
 }
 
-func canMove(tile *tile.Tile, tilePath *path, depth int) bool {
+func canMove(tile *tile.Tile, tilePath *path) bool {
 	if tile == nil {
 		return false
 	}
 
-	if _, ok := tilePath.traversePath[depth][int(tile.ID)+depth]; ok {
+	if _, ok := tilePath.traversePath[int(tile.ID)]; ok {
 		return false
 	}
 
 	return true
 }
 
-func traverse(tile *tile.Tile, p []path, pPathIdx int, depth int, wg *sync.WaitGroup) {
+func traverse(tile *tile.Tile, p *path, depth int, wg *sync.WaitGroup) {
 	if wg != nil {
 		defer wg.Done()
 	}
@@ -35,92 +35,62 @@ func traverse(tile *tile.Tile, p []path, pPathIdx int, depth int, wg *sync.WaitG
 		return
 	}
 
-	idx := int(tile.ID) - 1
+	tilePath := &path{}
+	tilePath.letters = make([]rune, 9)
+	tilePath.traversePath = make(map[int]struct{})
 
-	if pPathIdx >= 0 {
-		for k, v := range p[pPathIdx].traversePath[depth-1] {
-			p[idx].traversePath[depth][k] = v
+	if p != nil {
+		for k, v := range p.traversePath {
+			tilePath.traversePath[k] = v
 		}
 
-		//fmt.Printf("Will copy: %s\n", string(p[pPathIdx].letters[pPathIdx]))
-		copy(p[idx].letters[idx], p[pPathIdx].letters[pPathIdx])
+		copy(tilePath.letters, p.letters)
 	}
 
-	//fmt.Printf("after copy: %s\n", string(p[idx].letters[idx]))
+	tilePath.traversePath[int(tile.ID)] = struct{}{}
+	tilePath.letters[depth] = tile.Letter
 
-	p[idx].traversePath[depth][int(tile.ID)+depth] = struct{}{}
-	p[idx].letters[idx][depth] = tile.Letter
-	//fmt.Printf("after append: %s\n", string(p[idx].letters[idx]))
-	//fmt.Println()
-
-	word := string(p[idx].letters[idx][0 : depth+1])
-	//fmt.Println(word)
+	word := string(tilePath.letters[0 : depth+1])
 
 	if lexis.IsWord(word) {
 		fmt.Println(word)
 	}
 
-	if canMove(tile.N, &p[idx], depth) {
-		traverse(tile.N, p, idx, depth+1, nil)
+	if canMove(tile.N, tilePath) {
+		traverse(tile.N, tilePath, depth+1, nil)
 	}
-	if canMove(tile.S, &p[idx], depth) {
-		traverse(tile.S, p, idx, depth+1, nil)
+	if canMove(tile.S, tilePath) {
+		traverse(tile.S, tilePath, depth+1, nil)
 	}
-	if canMove(tile.E, &p[idx], depth) {
-		traverse(tile.E, p, idx, depth+1, nil)
+	if canMove(tile.E, tilePath) {
+		traverse(tile.E, tilePath, depth+1, nil)
 	}
-	if canMove(tile.W, &p[idx], depth) {
-		traverse(tile.W, p, idx, depth+1, nil)
+	if canMove(tile.W, tilePath) {
+		traverse(tile.W, tilePath, depth+1, nil)
 	}
-	if canMove(tile.NE, &p[idx], depth) {
-		traverse(tile.NE, p, idx, depth+1, nil)
+	if canMove(tile.NE, tilePath) {
+		traverse(tile.NE, tilePath, depth+1, nil)
 	}
-	if canMove(tile.SE, &p[idx], depth) {
-		traverse(tile.SE, p, idx, depth+1, nil)
+	if canMove(tile.SE, tilePath) {
+		traverse(tile.SE, tilePath, depth+1, nil)
 	}
-	if canMove(tile.SW, &p[idx], depth) {
-		traverse(tile.SW, p, idx, depth+1, nil)
+	if canMove(tile.SW, tilePath) {
+		traverse(tile.SW, tilePath, depth+1, nil)
 	}
-	if canMove(tile.NW, &p[idx], depth) {
-		traverse(tile.NW, p, idx, depth+1, nil)
+	if canMove(tile.NW, tilePath) {
+		traverse(tile.NW, tilePath, depth+1, nil)
 	}
-}
-
-func doNothing(wg *sync.WaitGroup) {
-	wg.Done()
 }
 
 //FindWords ...
 func FindWords(board *board.Board) {
+	fmt.Println("Finding...")
 	var wg sync.WaitGroup
 
-	p := make([]path, 16)
-
-	fmt.Printf("Length of P: %d\n", len(p))
-
+	wg.Add(len(board.Tiles))
 	for i := 0; i < 16; i++ {
-		p[i].letters = make([][]rune, 16)
-		p[i].traversePath = make([]map[int]struct{}, 16)
-
-		for j := 0; j < 16; j++ {
-			p[i].traversePath[j] = make(map[int]struct{})
-			p[i].letters[j] = make([]rune, 9)
-		}
+		go traverse(&board.Tiles[i], nil, 0, &wg)
 	}
-
-	//wg.Add(len(board.Tiles))
-	wg.Add(1)
-	idx := 10
-	p[idx].root = int(board.Tiles[idx].ID) - 1
-	go traverse(&board.Tiles[idx], p, -1, 0, &wg)
-	//fmt.Println("About to panic")
-
-	//fmt.Println(p[0].letters)
-	//go doNothing(&wg)
-	//for i, tile := range board.Tiles {
-	//	p[i].root = int(tile.ID) - 1
-	//	go traverse(&tile, p, -1, 0, &wg)
-	//}
 
 	wg.Wait()
 }
