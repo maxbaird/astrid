@@ -3,6 +3,7 @@ package blitz
 import (
 	"astrid/board"
 	"astrid/finder"
+	"astrid/printer"
 	"astrid/tile"
 	"astrid/wordcolumn"
 	"fmt"
@@ -10,8 +11,8 @@ import (
 
 //Blitz ...
 type Blitz struct {
-	wordColumn []wordcolumn.WordColumn
-	board      *board.Board
+	WordColumn []wordcolumn.WordColumn
+	Board      *board.Board
 }
 
 //New ...
@@ -30,7 +31,7 @@ func New(height uint16, width uint16) *Blitz {
 
 //PrintWords ...
 func (blitz *Blitz) PrintWords() {
-	for _, wc := range blitz.wordColumn {
+	for _, wc := range blitz.WordColumn {
 		for k := range wc.Words {
 			fmt.Printf("%s:[%d]\n", k, wc.RootIndex)
 		}
@@ -39,8 +40,9 @@ func (blitz *Blitz) PrintWords() {
 
 //Start ...
 func (blitz Blitz) Start() {
-	blitz.board.PlaceLetters("abcdefghijklmnop")
-	blitz.board.PrintBoard()
-	finder.FindWords(blitz.board, blitz.wordColumn)
-	blitz.PrintWords()
+	blitz.Board.PlaceLetters("abcdefghijklmnop")
+	//blitz.Board.PrintBoard()
+	finder.FindWords(blitz.Board, blitz.WordColumn)
+	//blitz.PrintWords()
+	printer.PrintWords(blitz.Board, blitz.WordColumn)
 }
