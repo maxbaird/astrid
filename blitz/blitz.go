@@ -4,18 +4,12 @@ import (
 	"astrid/board"
 	"astrid/finder"
 	"astrid/tile"
+	"astrid/wordcolumn"
 )
-
-type wordColumn struct {
-	tileIndex      uint16
-	wordCount      uint16
-	longestWordLen uint16
-	words          []string
-}
 
 //Blitz ...
 type Blitz struct {
-	wc    []wordColumn
+	wc    []wordcolumn.WordColumn
 	board *board.Board
 }
 
@@ -24,13 +18,8 @@ func New(height uint16, width uint16) *Blitz {
 	tiles := make([]tile.Tile, height*width)
 	board := board.New(tiles, height, width)
 
-	wc := make([]wordColumn, board.Size)
+	wc := make([]wordcolumn.WordColumn, board.Size)
 	return &Blitz{wc, board}
-}
-
-//AddWord ...
-func AddWord(word string, root uint16) {
-
 }
 
 //Start ...
