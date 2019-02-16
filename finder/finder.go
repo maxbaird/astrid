@@ -4,9 +4,12 @@ import (
 	"astrid/board"
 	"astrid/lexis"
 	"astrid/tile"
+	"astrid/wordcolumn"
 	"fmt"
 	"sync"
 )
+
+var wordColumn []wordcolumn.WordColumn
 
 type path struct {
 	root         int
@@ -62,7 +65,8 @@ func traverse(tile *tile.Tile, p *path, wg *sync.WaitGroup) {
 	word := string(tp.letters[0:tp.depth])
 
 	if lexis.IsWord(word) {
-		fmt.Printf("%s:[%d]\n", word, tp.root)
+		wordColumn[tp.root-1].AddWord(word)
+		//fmt.Printf("%s:[%d]\n", word, tp.root)
 	}
 
 	if canMove(tile.N, tp) {
@@ -92,8 +96,9 @@ func traverse(tile *tile.Tile, p *path, wg *sync.WaitGroup) {
 }
 
 //FindWords ...
-func FindWords(board *board.Board) {
+func FindWords(board *board.Board, wc []wordcolumn.WordColumn) {
 	fmt.Println("Finding...")
+	wordColumn = wc
 	var wg sync.WaitGroup
 	var i uint16
 
