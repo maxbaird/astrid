@@ -32,7 +32,7 @@ func New(height uint16, width uint16) *Blitz {
 func (blitz *Blitz) PrintWords() {
 	for _, wc := range blitz.wordColumn {
 		for k := range wc.Words {
-			fmt.Println(k)
+			fmt.Printf("%s:[%d]\n", k, wc.RootIndex)
 		}
 	}
 }

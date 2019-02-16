@@ -65,8 +65,7 @@ func traverse(tile *tile.Tile, p *path, wg *sync.WaitGroup) {
 	word := string(tp.letters[0:tp.depth])
 
 	if lexis.IsWord(word) {
-		wordColumn[tp.root-1].AddWord(word)
-		//fmt.Printf("%s:[%d]\n", word, tp.root)
+		wordColumn[tp.root-1].AddWord(word, uint16(tp.root))
 	}
 
 	if canMove(tile.N, tp) {
