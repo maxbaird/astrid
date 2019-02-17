@@ -9,7 +9,9 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 )
 
 //Blitz ...
@@ -62,8 +64,21 @@ func validateInput(letters string) (string, bool) {
 	return letters, true
 }
 
+func handleExit() {
+	gracefulStop := make(chan os.Signal)
+	signal.Notify(gracefulStop, syscall.SIGTERM)
+	signal.Notify(gracefulStop, syscall.SIGINT)
+
+	go func() {
+		<-gracefulStop
+		fmt.Println("\nBye!")
+		os.Exit(0)
+	}()
+}
+
 //Start ...
 func (blitz Blitz) Start() {
+	handleExit()
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
