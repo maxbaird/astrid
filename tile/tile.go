@@ -6,13 +6,13 @@ import (
 )
 
 type coordinate struct {
-	X uint16
-	Y uint16
+	X int
+	Y int
 }
 
 //Tile represents a letter on the board
 type Tile struct {
-	ID         uint16
+	ID         int
 	Letter     rune
 	Coordinate coordinate
 	N          *Tile
@@ -27,14 +27,14 @@ type Tile struct {
 
 //SetPaths ...
 func (tile *Tile) SetPaths(d dimension.Dimension, t []Tile) {
-	height := int(d.Height)
-	width := int(d.Width)
+	height := d.Height
+	width := d.Width
 
-	X := int(tile.Coordinate.X)
-	Y := int(tile.Coordinate.Y)
+	X := tile.Coordinate.X
+	Y := tile.Coordinate.Y
 
 	idx := (height * Y) + X //Index of tile
-	tile.ID = uint16(idx) + 1
+	tile.ID = idx + 1
 
 	NIdx := idx - width
 	SIdx := idx + height

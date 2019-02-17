@@ -14,8 +14,8 @@ import (
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to `file`")
 var memprofile = flag.String("memprofile", "", "write memory profile to `file`")
 
-const height uint16 = 4
-const width uint16 = 4
+const height int = 4
+const width int = 4
 
 func main() {
 	flag.Parse()

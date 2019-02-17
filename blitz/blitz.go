@@ -15,13 +15,13 @@ type Blitz struct {
 }
 
 //New ...
-func New(height uint16, width uint16) *Blitz {
+func New(height int, width int) *Blitz {
 	tiles := make([]tile.Tile, height*width)
 	board := board.New(tiles, height, width)
 
 	wc := make([]wordcolumn.WordColumn, board.Size)
 
-	for i := 0; i < int(board.Size); i++ {
+	for i := 0; i < board.Size; i++ {
 		wc[i].Words = make(map[string]struct{})
 	}
 
@@ -30,7 +30,7 @@ func New(height uint16, width uint16) *Blitz {
 
 //Start ...
 func (blitz Blitz) Start() {
-	blitz.Board.PlaceLetters("aseeaiaengseitse")
+	blitz.Board.PlaceLetters("abcdefghijklmnop")
 	finder.FindWords(blitz.Board, blitz.WordColumn)
 	printer.PrintWords(blitz.Board, blitz.WordColumn)
 }

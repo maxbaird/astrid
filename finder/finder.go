@@ -22,7 +22,7 @@ func canMove(tile *tile.Tile, tp *path) bool {
 		return false
 	}
 
-	if _, ok := tp.traversePath[int(tile.ID)]; ok {
+	if _, ok := tp.traversePath[tile.ID]; ok {
 		return false
 	}
 
@@ -45,7 +45,7 @@ func traverse(tile *tile.Tile, p *path, wg *sync.WaitGroup) {
 	tp.traversePath = make(map[int]struct{})
 
 	if p == nil { //Will be nil on first call
-		tp.root = int(tile.ID)
+		tp.root = tile.ID
 	} else {
 		for k, v := range p.traversePath {
 			tp.traversePath[k] = v
@@ -57,14 +57,14 @@ func traverse(tile *tile.Tile, p *path, wg *sync.WaitGroup) {
 
 	// tp.traversePath is a map that does not hold any values
 	// because we are only interested in unique keys
-	tp.traversePath[int(tile.ID)] = struct{}{}
+	tp.traversePath[tile.ID] = struct{}{}
 	tp.letters[tp.depth] = tile.Letter
 	tp.depth++
 
 	word := string(tp.letters[0:tp.depth])
 
 	if lexis.IsWord(word) {
-		wordColumn[tp.root-1].AddWord(word, uint16(tp.root))
+		wordColumn[tp.root-1].AddWord(word, tp.root)
 	}
 
 	if canMove(tile.N, tp) {
@@ -97,11 +97,10 @@ func traverse(tile *tile.Tile, p *path, wg *sync.WaitGroup) {
 func FindWords(board *board.Board, wc []wordcolumn.WordColumn) {
 	wordColumn = wc
 	var wg sync.WaitGroup
-	var i uint16
 
-	wg.Add(int(board.Size))
+	wg.Add(board.Size)
 
-	for i = 0; i < board.Size; i++ {
+	for i := 0; i < board.Size; i++ {
 		go traverse(&board.Tiles[i], nil, &wg)
 	}
 

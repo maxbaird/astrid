@@ -1,6 +1,6 @@
 package trie
 
-const alphabetSize uint16 = 26
+const alphabetSize int = 26
 
 //Trie ...
 type Trie struct {
@@ -8,8 +8,8 @@ type Trie struct {
 	isEndOfWord bool
 }
 
-func charToIndex(c rune) uint {
-	return uint(c) - uint('a')
+func charToIndex(c rune) int {
+	return int(c) - int('a')
 }
 
 //Insert ...

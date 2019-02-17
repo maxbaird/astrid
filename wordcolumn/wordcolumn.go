@@ -2,14 +2,14 @@ package wordcolumn
 
 //WordColumn ...
 type WordColumn struct {
-	RootIndex      uint16
-	WordCount      uint16
-	LongestWordLen uint16
+	RootIndex      int
+	WordCount      int
+	LongestWordLen int
 	Words          map[string]struct{}
 }
 
 //AddWord ...
-func (wc *WordColumn) AddWord(word string, rootIdx uint16) {
+func (wc *WordColumn) AddWord(word string, rootIdx int) {
 	if _, ok := wc.Words[word]; ok {
 		return
 	}
@@ -19,11 +19,11 @@ func (wc *WordColumn) AddWord(word string, rootIdx uint16) {
 		return
 	}
 
-	wc.RootIndex = uint16(rootIdx)
+	wc.RootIndex = rootIdx
 	wc.Words[word] = struct{}{}
 
-	if wordLen > int(wc.LongestWordLen) {
-		wc.LongestWordLen = uint16(wordLen)
+	if wordLen > wc.LongestWordLen {
+		wc.LongestWordLen = wordLen
 	}
 
 	wc.WordCount++
