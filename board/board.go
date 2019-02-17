@@ -3,7 +3,6 @@ package board
 import (
 	"astrid/dimension"
 	"astrid/tile"
-	"fmt"
 )
 
 //Board holds all tiles
@@ -41,16 +40,5 @@ func (board *Board) PlaceLetters(letters string) {
 
 	for i = 0; i < board.Size; i++ {
 		board.Tiles[i].Letter = rune(letters[i])
-	}
-}
-
-//PrintBoard ...
-func (board *Board) PrintBoard() {
-	fmt.Print("Printing board\n")
-	var i uint16
-
-	for i = 0; i < board.Size; i++ {
-		board.Tiles[i].PrintTile()
-		fmt.Print("\n")
 	}
 }

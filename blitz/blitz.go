@@ -6,7 +6,6 @@ import (
 	"astrid/printer"
 	"astrid/tile"
 	"astrid/wordcolumn"
-	"fmt"
 )
 
 //Blitz ...
@@ -29,20 +28,9 @@ func New(height uint16, width uint16) *Blitz {
 	return &Blitz{wc, board}
 }
 
-//PrintWords ...
-func (blitz *Blitz) PrintWords() {
-	for _, wc := range blitz.WordColumn {
-		for k := range wc.Words {
-			fmt.Printf("%s:[%d]\n", k, wc.RootIndex)
-		}
-	}
-}
-
 //Start ...
 func (blitz Blitz) Start() {
 	blitz.Board.PlaceLetters("aseeaiaengseitse")
-	//blitz.Board.PrintBoard()
 	finder.FindWords(blitz.Board, blitz.WordColumn)
-	//blitz.PrintWords()
 	printer.PrintWords(blitz.Board, blitz.WordColumn)
 }
