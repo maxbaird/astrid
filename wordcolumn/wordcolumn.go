@@ -1,5 +1,9 @@
 package wordcolumn
 
+import (
+	"astrid/configuration"
+)
+
 //WordColumn ...
 type WordColumn struct {
 	RootIndex      int
@@ -15,7 +19,7 @@ func (wc *WordColumn) AddWord(word string, rootIdx int) {
 	}
 	wordLen := len(word)
 
-	if wordLen < 3 {
+	if wordLen < configuration.Config.MinWordLength {
 		return
 	}
 
