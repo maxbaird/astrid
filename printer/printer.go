@@ -4,7 +4,9 @@ import (
 	"astrid/board"
 	"astrid/wordcolumn"
 	"fmt"
+	"github.com/fatih/color"
 	"sort"
+	"strings"
 	"sync"
 )
 
@@ -72,9 +74,11 @@ func pad(length int) int {
 }
 
 func printColumnHeaders(start int, end int) {
+	c := color.New(color.FgCyan, color.Bold)
+
 	for i := start; i < end; i++ {
 		str := fmt.Sprintf("[%d]", i+1)
-		fmt.Printf("%s%*s", str, pad(len(str)), "")
+		c.Printf("%s%*s", str, pad(len(str)), "")
 	}
 	fmt.Println()
 }
@@ -93,10 +97,20 @@ func getLongestColumn(start int, end int) int {
 
 func printWord(word string, endColumn bool) {
 	var padding int
+	highlightLetters := "kxqzjy"
+
 	if !endColumn {
 		padding = pad(len(word))
 	}
-	fmt.Printf("%s%*s", word, padding, "")
+
+	str := fmt.Sprintf("%s%*s", word, padding, "")
+
+	if strings.ContainsAny(word, highlightLetters) {
+		c := color.New(color.FgRed, color.Bold)
+		c.Printf(str)
+	} else {
+		fmt.Printf(str)
+	}
 }
 
 //PrintWords ...
@@ -106,7 +120,7 @@ func PrintWords(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 
 	//////////////////
 	//values to read from configuration
-	colsPerRow := 16
+	colsPerRow := 8
 	maxWordsPerRow := 15
 	/////////////////
 
