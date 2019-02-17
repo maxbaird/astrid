@@ -40,7 +40,7 @@ func (blitz *Blitz) PrintWords() {
 
 //Start ...
 func (blitz Blitz) Start() {
-	blitz.Board.PlaceLetters("abcdefghijklmnop")
+	blitz.Board.PlaceLetters("aseeaiaengseitse")
 	//blitz.Board.PrintBoard()
 	finder.FindWords(blitz.Board, blitz.WordColumn)
 	//blitz.PrintWords()

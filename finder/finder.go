@@ -5,7 +5,6 @@ import (
 	"astrid/lexis"
 	"astrid/tile"
 	"astrid/wordcolumn"
-	"fmt"
 	"sync"
 )
 
@@ -96,7 +95,6 @@ func traverse(tile *tile.Tile, p *path, wg *sync.WaitGroup) {
 
 //FindWords ...
 func FindWords(board *board.Board, wc []wordcolumn.WordColumn) {
-	fmt.Println("Finding...")
 	wordColumn = wc
 	var wg sync.WaitGroup
 	var i uint16

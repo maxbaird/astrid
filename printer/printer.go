@@ -23,6 +23,7 @@ func (s byLength) Less(i, j int) bool {
 type printColumn struct {
 	idx            uint16
 	words          []string
+	wordCount      uint16
 	longestWordLen uint16
 }
 
@@ -45,6 +46,7 @@ func makePrintColumns(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 			pc.words = make([]string, len(wc.Words))
 			pc.longestWordLen = wc.LongestWordLen
 			pc.idx = wc.RootIndex
+			pc.wordCount = wc.WordCount
 			j := 0
 
 			for k := range wc.Words {
@@ -72,10 +74,31 @@ func pad(length uint16) uint16 {
 func printColumnHeaders(start int, end int) {
 	for i := start; i < end; i++ {
 		str := fmt.Sprintf("[%d]", i+1)
-		//str := fmt.Sprintf("%s%c%d%c", s1, '%', pad(uint16(len(s1))), 's')
 		fmt.Printf("%s%*s", str, pad(uint16(len(str))), "")
 	}
 	fmt.Println()
+}
+
+func getLongestColumn(start int, end int) int {
+	var count uint16
+
+	for i := start; i < end; i++ {
+		if printColumns[i].wordCount > count {
+			count = printColumns[i].wordCount
+		}
+	}
+
+	return int(count)
+}
+
+func printWord(word string, endColumn bool) {
+	var padding uint16
+	if endColumn {
+		padding = 0
+	} else {
+		padding = pad(uint16(len(word)))
+	}
+	fmt.Printf("%s%*s", word, padding, "")
 }
 
 //PrintWords ...
@@ -83,17 +106,50 @@ func PrintWords(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 	makePrintColumns(board, wordColumns)
 	findLongestWord()
 
+	//////////////////
+	//values to read from configuration
+	colsPerRow := 16
+	maxWordsPerRow := 15
+	/////////////////
+
 	colHeaderStart := 0
-	colHeaderEnd := colHeaderStart + 16
+	colHeaderEnd := colHeaderStart + colsPerRow
 
 	var i uint16
-	for i = 0; i < board.Size; i = i + 16 {
+	for i = 0; i < board.Size; i += uint16(colsPerRow) {
 		printColumnHeaders(colHeaderStart, colHeaderEnd)
 
-		colHeaderStart += 16
-		colHeaderEnd = colHeaderStart + 16
+		longestColumn := getLongestColumn(colHeaderStart, colHeaderEnd)
+		numPrintedRows := 0
+
+		for j := 0; j < longestColumn; j++ {
+			if numPrintedRows == maxWordsPerRow {
+				numPrintedRows = 0
+				fmt.Println()
+				printColumnHeaders(colHeaderStart, colHeaderEnd)
+			}
+			numPrintedRows++
+
+			for k := colHeaderStart; k < colHeaderEnd; k++ {
+				if int(printColumns[k].wordCount) > j {
+					printWord(printColumns[k].words[j], k == (colHeaderEnd-1))
+				} else {
+					fmt.Printf("%*s", pad(0), "")
+				}
+			}
+			fmt.Println()
+		}
+		fmt.Println()
+
+		colHeaderStart += colsPerRow
+		colHeaderEnd = colHeaderStart + colsPerRow
 		if colHeaderEnd >= int(board.Size) {
 			colHeaderEnd = int(board.Size)
 		}
 	}
+
+	for i = 0; i < (longestWordLen+spaceBetweenColumns)*uint16(colsPerRow); i++ {
+		fmt.Print("+")
+	}
+	fmt.Printf("\n\n")
 }
