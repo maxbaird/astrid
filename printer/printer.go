@@ -2,6 +2,7 @@ package printer
 
 import (
 	"astrid/board"
+	"astrid/configuration"
 	"astrid/wordcolumn"
 	"fmt"
 	"github.com/fatih/color"
@@ -97,7 +98,6 @@ func getLongestColumn(start int, end int) int {
 
 func printWord(word string, endColumn bool) {
 	var padding int
-	highlightLetters := "kxqzjy"
 
 	if !endColumn {
 		padding = pad(len(word))
@@ -105,7 +105,7 @@ func printWord(word string, endColumn bool) {
 
 	str := fmt.Sprintf("%s%*s", word, padding, "")
 
-	if strings.ContainsAny(word, highlightLetters) {
+	if strings.ContainsAny(word, configuration.Config.HighlightLetters) {
 		c := color.New(color.FgRed, color.Bold)
 		c.Printf(str)
 	} else {
@@ -118,11 +118,8 @@ func PrintWords(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 	makePrintColumns(board, wordColumns)
 	findLongestWord()
 
-	//////////////////
-	//values to read from configuration
-	colsPerRow := 8
-	maxWordsPerRow := 15
-	/////////////////
+	colsPerRow := configuration.Config.WordColumnsPerRow
+	maxWordsPerRow := configuration.Config.MaxWordsPerRow
 
 	colHeaderStart := 0
 	colHeaderEnd := colHeaderStart + colsPerRow

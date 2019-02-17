@@ -2,6 +2,7 @@ package finder
 
 import (
 	"astrid/board"
+	"astrid/configuration"
 	"astrid/lexis"
 	"astrid/tile"
 	"astrid/wordcolumn"
@@ -35,13 +36,13 @@ func traverse(tile *tile.Tile, p *path, wg *sync.WaitGroup) {
 	}
 
 	if p != nil { //Will be nil on first call
-		if p.depth == 9 {
+		if p.depth == configuration.Config.MaxWordLength {
 			return
 		}
 	}
 
 	tp := &path{}
-	tp.letters = make([]rune, 9)
+	tp.letters = make([]rune, configuration.Config.MaxWordLength)
 	tp.traversePath = make(map[int]struct{})
 
 	if p == nil { //Will be nil on first call

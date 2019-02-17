@@ -1,6 +1,7 @@
 package lexis
 
 import (
+	"astrid/configuration"
 	"astrid/trie"
 	"bufio"
 	"log"
@@ -26,7 +27,7 @@ func LoadLexis() {
 
 	for reader.Scan() {
 		txt := reader.Text()
-		if len(txt) <= 9 {
+		if len(txt) <= configuration.Config.MaxWordLength {
 			lexisTrie.Insert(txt)
 		}
 	}

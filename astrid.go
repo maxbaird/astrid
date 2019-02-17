@@ -3,6 +3,7 @@ package main
 
 import (
 	"astrid/blitz"
+	"astrid/configuration"
 	"astrid/lexis"
 	"flag"
 	"log"
@@ -30,6 +31,7 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
+	configuration.ReadConfig()
 	lexis.LoadLexis()
 	blitz := blitz.New(height, width)
 	blitz.Start()
