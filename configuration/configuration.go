@@ -35,7 +35,9 @@ const longestWordLength = 16
 const maxWordColumnsPerRow = 16
 
 //Config ...
-var Config = config{defaultMaxWordLength,
+var Config config
+
+var defaultConfig = config{defaultMaxWordLength,
 	defaultMinWordLength,
 	defaultMaxWordsPerRow,
 	defaultWordColumnsPerRow,
@@ -80,7 +82,6 @@ func validateConfig() {
 
 		Config.LexisFilePath = defaultLexisFilePath
 	}
-	fmt.Println()
 }
 
 //ReadConfig ...
@@ -92,8 +93,9 @@ func ReadConfig() {
 	}
 
 	if _, err := toml.DecodeFile(configFile, &Config); err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading config file. Using default configuration.")
+		fmt.Fprintf(os.Stderr, "Error reading config file: %s.\nUsing default configuration.", err)
+		Config = defaultConfig
+		return
 	}
-	fmt.Println(Config)
 	validateConfig()
 }
