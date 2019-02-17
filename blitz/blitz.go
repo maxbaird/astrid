@@ -5,6 +5,7 @@ import (
 	"astrid/finder"
 	"astrid/printer"
 	"astrid/tile"
+	"astrid/welcome"
 	"astrid/wordcolumn"
 	"bufio"
 	"fmt"
@@ -79,6 +80,10 @@ func handleExit() {
 //Start ...
 func (blitz Blitz) Start() {
 	handleExit()
+
+	welcome.PrintWelcome()
+	fmt.Println("ctrl + C to exit.\n")
+
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
