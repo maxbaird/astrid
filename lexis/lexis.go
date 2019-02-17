@@ -17,7 +17,7 @@ func LoadLexis() {
 		return
 	}
 
-	file, err := os.Open("wordList")
+	file, err := os.Open(configuration.Config.LexisFilePath)
 
 	if err != nil {
 		log.Fatal(err)

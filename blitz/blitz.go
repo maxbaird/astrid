@@ -69,6 +69,8 @@ func handleExit() {
 	gracefulStop := make(chan os.Signal)
 	signal.Notify(gracefulStop, syscall.SIGTERM)
 	signal.Notify(gracefulStop, syscall.SIGINT)
+	signal.Notify(gracefulStop, syscall.SIGHUP)
+	signal.Notify(gracefulStop, syscall.SIGQUIT)
 
 	go func() {
 		<-gracefulStop

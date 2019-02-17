@@ -28,7 +28,7 @@ const defaultWordColumnsPerRow = 16
 const defaultSortDescending = true
 const defaultEnableHighlighting = true
 const defaultHighlightLetters = "xqzjy"
-const defaultLexisFilePath = "lexis"
+const defaultLexisFilePath = "wordList"
 
 //Other constants
 const longestWordLength = 16
@@ -74,9 +74,9 @@ func validateConfig() {
 		Config.WordColumnsPerRow = defaultWordColumnsPerRow
 	}
 
-	_, err := os.Stat(Config.LexisFilePath)
+	file, err := os.Stat(Config.LexisFilePath)
 
-	if err != nil {
+	if err != nil || !file.Mode().IsRegular() {
 		fmt.Fprintf(os.Stderr, "Lexis file \"%s\" not found. Defaulting to \"%s\".\n", Config.LexisFilePath,
 			defaultLexisFilePath)
 
