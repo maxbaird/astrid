@@ -103,7 +103,6 @@ func (blitz *Blitz) Start() {
 
 		if letters, ok := validateInput(input); ok {
 			blitz.Board.PlaceLetters(letters)
-			fmt.Println(blitz.WordColumn)
 			finder.FindWords(blitz.Board, blitz.WordColumn)
 			printer.PrintWords(blitz.Board, blitz.WordColumn)
 			reset(blitz)
