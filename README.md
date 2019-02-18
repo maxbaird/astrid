@@ -33,21 +33,21 @@ At startup Astrid loads a configuration file (`config.conf`) which contains
 some options that can be modified. A description of the options along with
 their default values are in the table below.
 
-Option                |                       Description                           | Default
-----------------------|-------------------------------------------------------------|---------
-`MAX_WORD_LENGTH`     |  Most letters a word should have                            | 9                        
-`MIN_WORD_LENGTH`     |  Least letters a word should have                           | 3
-`MAX_WORDS_PER_ROW`   |  Number of words shown before repeating column header       | 15  
-`WORD_COLUMNS_PER_ROW`|  Number of columns of words to show per row                 | 16
-`SORT_DESCENDING`     |  Sort words in descending order                             | True
-`ENABLE_HIGHLIGHTING` |  Highlight word columns and words with rare letters         | True
-`HIGHLIGHT_LETTERS`   |  Words containing these letters are highlighted.            | xqzjy
-`LEXIS_FILE_PATH`     |  Path to file with list of words                            | lexis
+Option               |                 Description                           | Default
+---------------------|-------------------------------------------------------|---------
+`maxWordLength`      |  Most letters a word should have                      | 9                        
+`minWordLength`      |  Least letters a word should have                     | 3
+`maxWordsPerRow`     |  Number of words shown before repeating column header | 15  
+`wordColumnsPerRow`  |  Number of columns of words to show per row           | 16
+`sortDescending`     |  Sort words in descending order                       | True
+`enableHighlighting` |  Highlight word columns and words with rare letters   | True
+`highlightLetters`   |  Words containing these letters are highlighted.      | xqzjy
+`lexisFilePath`      |  Path to file with list of words                      | lexis
 
 
 The default options should be fine on most systems. If your display is small
-and/or does not support coloured text, adjust values of `MAX_WORDS_PER_ROW`,
-`WORD_COLUMNS_PER_ROW` and `ENABLE_HIGHLIGHTING` respectively.
+and/or does not support coloured text, adjust values of `maxWordsPerRow`,
+`wordColumnsPerRow` and `enableHighlighting` respectively.
 
 ## Miscellaneous  
 The data structure used to store the lexis is a Trie. While this is a fairly
@@ -57,4 +57,4 @@ since the code is quite loosely coupled. So feel free to make this change
 yourself if necessary. Otherwise I'll get to it sometime later when I have more
 time :-). 
 
-Last Modified Sun 17 Feb 23:50:12 GMT 2019
+Last Modified Mon 18 Feb 10:34:16 GMT 2019
