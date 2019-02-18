@@ -46,6 +46,11 @@ func validateInput(letters string) (string, bool) {
 	letters = strings.Replace(letters, " ", "", -1)
 	letters = strings.ToLower(letters)
 
+	if letters == "test" {
+		letters = "abcdefghijklmnop"
+		return letters, true
+	}
+
 	letterLen := len(letters)
 
 	if letterLen < maxLetters {
