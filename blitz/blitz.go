@@ -46,12 +46,16 @@ func validateInput(letters string) (string, bool) {
 	letters = strings.Replace(letters, " ", "", -1)
 	letters = strings.ToLower(letters)
 
+	letterLen := len(letters)
+
+	if letterLen == 0 {
+		return letters, false
+	}
+
 	if letters == "test" {
 		letters = "abcdefghijklmnop"
 		return letters, true
 	}
-
-	letterLen := len(letters)
 
 	if letterLen < maxLetters {
 		fmt.Fprintf(os.Stderr, "%d letters needed; %d entered!\n", maxLetters, letterLen)
