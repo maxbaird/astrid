@@ -65,6 +65,15 @@ func validateInput(letters string) (string, bool) {
 	return letters, true
 }
 
+func reset(blitz *Blitz) {
+	blitz.WordColumn = nil
+	blitz.WordColumn = make([]wordcolumn.WordColumn, blitz.Board.Size)
+
+	for i := 0; i < blitz.Board.Size; i++ {
+		blitz.WordColumn[i].Words = make(map[string]struct{})
+	}
+}
+
 func handleExit() {
 	gracefulStop := make(chan os.Signal)
 	signal.Notify(gracefulStop, syscall.SIGTERM)
@@ -80,7 +89,7 @@ func handleExit() {
 }
 
 //Start ...
-func (blitz Blitz) Start() {
+func (blitz *Blitz) Start() {
 	handleExit()
 
 	welcome.PrintWelcome()
@@ -94,8 +103,10 @@ func (blitz Blitz) Start() {
 
 		if letters, ok := validateInput(input); ok {
 			blitz.Board.PlaceLetters(letters)
+			fmt.Println(blitz.WordColumn)
 			finder.FindWords(blitz.Board, blitz.WordColumn)
 			printer.PrintWords(blitz.Board, blitz.WordColumn)
+			reset(blitz)
 		}
 	}
 }
