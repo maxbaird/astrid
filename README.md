@@ -10,8 +10,8 @@ lexis in order to determine if the current collection of letters makes a valid
 word or not.
 
 ## Executing
-Type `./blitzkrieg.out` to execute the solver. You will be presented with a
-prompt where you must type sixteen letters that represent the Word Blitz
+After building, type `./astrid` to execute the solver. You will be presented
+with a prompt where you must type sixteen letters that represent the Word Blitz
 puzzle. Type the letters as the appear in Word Blitz row by row from top to
 bottom. After typing press enter.
 
