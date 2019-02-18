@@ -9,10 +9,6 @@ each move, the total letters traversed thus far are checked against an English
 lexis in order to determine if the current collection of letters makes a valid
 word or not.
 
-## Compiling
-Navigate to the root directory of the project and type `make`. This should
-generate the executable file `blitzkrieg.out`.
-
 ## Executing
 Type `./blitzkrieg.out` to execute the solver. You will be presented with a
 prompt where you must type sixteen letters that represent the Word Blitz
