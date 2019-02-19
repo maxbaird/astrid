@@ -1,12 +1,12 @@
 package strid
 
 import (
-	"astrid/board"
-	"astrid/finder"
-	"astrid/printer"
-	"astrid/tile"
-	"astrid/welcome"
-	"astrid/wordcolumn"
+	"github.com/maxbaird/astrid/board"
+	"github.com/maxbaird/astrid/finder"
+	"github.com/maxbaird/astrid/printer"
+	"github.com/maxbaird/astrid/tile"
+	"github.com/maxbaird/astrid/welcome"
+	"github.com/maxbaird/astrid/wordcolumn"
 	"bufio"
 	"fmt"
 	"os"

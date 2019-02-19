@@ -1,7 +1,7 @@
 package tile
 
 import (
-	"astrid/dimension"
+	"github.com/maxbaird/astrid/dimension"
 	"fmt"
 )
 

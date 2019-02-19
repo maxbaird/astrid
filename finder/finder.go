@@ -1,11 +1,11 @@
 package finder
 
 import (
-	"astrid/board"
-	"astrid/configuration"
-	"astrid/lexis"
-	"astrid/tile"
-	"astrid/wordcolumn"
+	"github.com/maxbaird/astrid/board"
+	"github.com/maxbaird/astrid/configuration"
+	"github.com/maxbaird/astrid/lexis"
+	"github.com/maxbaird/astrid/tile"
+	"github.com/maxbaird/astrid/wordcolumn"
 	"sync"
 )
 

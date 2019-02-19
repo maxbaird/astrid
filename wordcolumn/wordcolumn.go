@@ -1,7 +1,7 @@
 package wordcolumn
 
 import (
-	"astrid/configuration"
+	"github.com/maxbaird/astrid/configuration"
 )
 
 //WordColumn ...

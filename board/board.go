@@ -1,8 +1,8 @@
 package board
 
 import (
-	"astrid/dimension"
-	"astrid/tile"
+	"github.com/maxbaird/astrid/dimension"
+	"github.com/maxbaird/astrid/tile"
 )
 
 //Board holds all tiles

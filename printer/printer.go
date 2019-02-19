@@ -1,9 +1,9 @@
 package printer
 
 import (
-	"astrid/board"
-	"astrid/configuration"
-	"astrid/wordcolumn"
+	"github.com/maxbaird/astrid/board"
+	"github.com/maxbaird/astrid/configuration"
+	"github.com/maxbaird/astrid/wordcolumn"
 	"fmt"
 	"github.com/fatih/color"
 	"sort"

@@ -1,8 +1,8 @@
 package lexis
 
 import (
-	"astrid/configuration"
-	"astrid/trie"
+	"github.com/maxbaird/astrid/configuration"
+	"github.com/maxbaird/astrid/trie"
 	"bufio"
 	"log"
 	"os"
