@@ -13,6 +13,6 @@ const width int = 4
 func main() {
 	configuration.ReadConfig()
 	lexis.LoadLexis()
-	blitz := blitz.New(height, width)
-	blitz.Start()
+	strid := strid.New(height, width)
+	strid.Start()
 }

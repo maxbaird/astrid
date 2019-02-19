@@ -1,4 +1,4 @@
-package blitz
+package strid
 
 import (
 	"astrid/board"
@@ -15,8 +15,8 @@ import (
 	"syscall"
 )
 
-//Blitz ...
-type Blitz struct {
+//Strid ...
+type Strid struct {
 	WordColumn []wordcolumn.WordColumn
 	Board      *board.Board
 }
@@ -26,7 +26,7 @@ const prompt = ">> "
 var maxLetters int
 
 //New ...
-func New(height int, width int) *Blitz {
+func New(height int, width int) *Strid {
 	tiles := make([]tile.Tile, height*width)
 	board := board.New(tiles, height, width)
 
@@ -38,7 +38,7 @@ func New(height int, width int) *Blitz {
 		wc[i].Words = make(map[string]struct{})
 	}
 
-	return &Blitz{wc, board}
+	return &Strid{wc, board}
 }
 
 func validateInput(letters string) (string, bool) {
@@ -74,12 +74,12 @@ func validateInput(letters string) (string, bool) {
 	return letters, true
 }
 
-func reset(blitz *Blitz) {
-	blitz.WordColumn = nil
-	blitz.WordColumn = make([]wordcolumn.WordColumn, blitz.Board.Size)
+func reset(strid *Strid) {
+	strid.WordColumn = nil
+	strid.WordColumn = make([]wordcolumn.WordColumn, strid.Board.Size)
 
-	for i := 0; i < blitz.Board.Size; i++ {
-		blitz.WordColumn[i].Words = make(map[string]struct{})
+	for i := 0; i < strid.Board.Size; i++ {
+		strid.WordColumn[i].Words = make(map[string]struct{})
 	}
 }
 
@@ -98,7 +98,7 @@ func handleExit() {
 }
 
 //Start ...
-func (blitz *Blitz) Start() {
+func (strid *Strid) Start() {
 	handleExit()
 
 	welcome.PrintWelcome()
@@ -111,10 +111,10 @@ func (blitz *Blitz) Start() {
 		input, _ := reader.ReadString('\n')
 
 		if letters, ok := validateInput(input); ok {
-			blitz.Board.PlaceLetters(letters)
-			finder.FindWords(blitz.Board, blitz.WordColumn)
-			printer.PrintWords(blitz.Board, blitz.WordColumn)
-			reset(blitz)
+			strid.Board.PlaceLetters(letters)
+			finder.FindWords(strid.Board, strid.WordColumn)
+			printer.PrintWords(strid.Board, strid.WordColumn)
+			reset(strid)
 		}
 	}
 }
