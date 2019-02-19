@@ -2,9 +2,9 @@
 package main
 
 import (
-	"astrid/blitz"
 	"astrid/configuration"
 	"astrid/lexis"
+	"astrid/strid"
 	"flag"
 	"log"
 	"os"
