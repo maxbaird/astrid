@@ -2,9 +2,9 @@
 package main
 
 import (
-	"astrid/configuration"
-	"astrid/lexis"
-	"astrid/strid"
+	"github.com/maxbaird/astrid/configuration"
+	"github.com/maxbaird/astrid/lexis"
+	"github.com/maxbaird/astrid/strid"
 )
 
 const height int = 4
