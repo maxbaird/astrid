@@ -114,11 +114,11 @@ func ReadConfig() {
 
 	if err != nil || !file.Mode().IsRegular() {
 		fmt.Fprintf(os.Stderr, "Config file missing: \"%s\". Using default configuration.", configFile)
-	}
-
-	if _, err := toml.DecodeFile(configFile, &loadedConfig); err != nil {
+		loadedConfig = defaultConfig
+	} else if _, err := toml.DecodeFile(configFile, &loadedConfig); err != nil {
 		fmt.Fprintf(os.Stderr, "Error reading config file: %s.\nUsing default configuration.", err)
 		loadedConfig = defaultConfig
 	}
+
 	validateConfig()
 }
