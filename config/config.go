@@ -67,28 +67,24 @@ var defaultConfig = config{defaultMaxWordLength,
 func validateConfig() {
 	if loadedConfig.MaxWordLength <= 0 || loadedConfig.MaxWordLength > longestWordLength {
 		fmt.Fprintf(os.Stderr, "MaxWordLength must be between 0 and %d. Defaulting to %d.\n", longestWordLength, defaultMaxWordLength)
-		MaxWordLength = defaultMaxWordLength
 	} else {
 		MaxWordLength = loadedConfig.MaxWordLength
 	}
 
 	if loadedConfig.MinWordLength <= 0 || loadedConfig.MinWordLength >= longestWordLength {
 		fmt.Fprintf(os.Stderr, "MinWordLength must be between 0 and %d. Defaulting to %d.\n", longestWordLength, defaultMinWordLength)
-		MinWordLength = defaultMinWordLength
 	} else {
 		MinWordLength = loadedConfig.MinWordLength
 	}
 
 	if loadedConfig.MinWordLength >= loadedConfig.MaxWordLength {
 		fmt.Fprintf(os.Stderr, "MinWordLength must be less than MaxWordLength. Defaulting to %d.\n", defaultMinWordLength)
-		MinWordLength = defaultMinWordLength
 	} else {
 		MinWordLength = loadedConfig.MinWordLength
 	}
 
 	if loadedConfig.MaxWordsPerRow <= 0 {
 		fmt.Fprintf(os.Stderr, "MaxWordsPerRow cannot be less than 0. Defaulting to %d.\n", defaultMaxWordsPerRow)
-		MaxWordsPerRow = defaultMaxWordsPerRow
 	} else {
 		MaxWordsPerRow = loadedConfig.MaxWordsPerRow
 	}
@@ -96,7 +92,6 @@ func validateConfig() {
 	if loadedConfig.WordColumnsPerRow <= 0 || loadedConfig.WordColumnsPerRow > maxWordColumnsPerRow {
 		fmt.Fprintf(os.Stderr, "WordColumnsPerRow must be between 0 and %d. Defaulting to %d.\n", maxWordColumnsPerRow,
 			defaultWordColumnsPerRow)
-		WordColumnsPerRow = defaultWordColumnsPerRow
 	} else {
 		WordColumnsPerRow = loadedConfig.WordColumnsPerRow
 	}
@@ -106,8 +101,6 @@ func validateConfig() {
 	if err != nil || !file.Mode().IsRegular() {
 		fmt.Fprintf(os.Stderr, "Lexis file \"%s\" not found. Defaulting to \"%s\".\n", loadedConfig.LexisFilePath,
 			defaultLexisFilePath)
-
-		LexisFilePath = defaultLexisFilePath
 	} else {
 		LexisFilePath = loadedConfig.LexisFilePath
 	}
