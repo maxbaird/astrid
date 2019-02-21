@@ -1,11 +1,11 @@
 package printer
 
 import (
-	"github.com/maxbaird/astrid/board"
-	"github.com/maxbaird/astrid/configuration"
-	"github.com/maxbaird/astrid/wordcolumn"
 	"fmt"
 	"github.com/fatih/color"
+	"github.com/maxbaird/astrid/board"
+	"github.com/maxbaird/astrid/config"
+	"github.com/maxbaird/astrid/wordcolumn"
 	"sort"
 	"strings"
 	"sync"
@@ -105,7 +105,7 @@ func printWord(word string, endColumn bool) {
 
 	str := fmt.Sprintf("%s%*s", word, padding, "")
 
-	if strings.ContainsAny(word, configuration.Config.HighlightLetters) {
+	if strings.ContainsAny(word, config.HighlightLetters) {
 		c := color.New(color.FgRed, color.Bold)
 		c.Printf(str)
 	} else {
@@ -118,8 +118,8 @@ func PrintWords(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 	makePrintColumns(board, wordColumns)
 	findLongestWord()
 
-	colsPerRow := configuration.Config.WordColumnsPerRow
-	maxWordsPerRow := configuration.Config.MaxWordsPerRow
+	colsPerRow := config.WordColumnsPerRow
+	maxWordsPerRow := config.MaxWordsPerRow
 
 	colHeaderStart := 0
 	colHeaderEnd := colHeaderStart + colsPerRow

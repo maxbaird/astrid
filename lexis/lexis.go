@@ -1,9 +1,9 @@
 package lexis
 
 import (
-	"github.com/maxbaird/astrid/configuration"
-	"github.com/maxbaird/astrid/trie"
 	"bufio"
+	"github.com/maxbaird/astrid/config"
+	"github.com/maxbaird/astrid/trie"
 	"log"
 	"os"
 )
@@ -17,7 +17,7 @@ func LoadLexis() {
 		return
 	}
 
-	file, err := os.Open(configuration.Config.LexisFilePath)
+	file, err := os.Open(config.LexisFilePath)
 
 	if err != nil {
 		log.Fatal(err)
@@ -27,7 +27,7 @@ func LoadLexis() {
 
 	for reader.Scan() {
 		txt := reader.Text()
-		if len(txt) <= configuration.Config.MaxWordLength {
+		if len(txt) <= config.MaxWordLength {
 			lexisTrie.Insert(txt)
 		}
 	}

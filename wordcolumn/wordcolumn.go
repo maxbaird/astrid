@@ -1,7 +1,7 @@
 package wordcolumn
 
 import (
-	"github.com/maxbaird/astrid/configuration"
+	"github.com/maxbaird/astrid/config"
 )
 
 //WordColumn ...
@@ -19,7 +19,7 @@ func (wc *WordColumn) AddWord(word string, rootIdx int) {
 	}
 	wordLen := len(word)
 
-	if wordLen < configuration.Config.MinWordLength {
+	if wordLen < config.MinWordLength {
 		return
 	}
 
