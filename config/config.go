@@ -6,16 +6,24 @@ import (
 	"os"
 )
 
-//Default values to be used if error occurs
-const defaultMaxWordLength = 9
-const defaultMinWordLength = 3
-const defaultMaxWordsPerRow = 10
-const defaultWordColumnsPerRow = 16
-const defaultSortDescending = true
-const defaultEnableHighlighting = true
-const defaultHighlightLetters = "xqzjy"
-const defaultLexisFilePath = "wordList"
+const (
+	//Default values to be used if error occurs
+	defaultMaxWordLength      = 9
+	defaultMinWordLength      = 3
+	defaultMaxWordsPerRow     = 10
+	defaultWordColumnsPerRow  = 16
+	defaultSortDescending     = true
+	defaultEnableHighlighting = true
+	defaultHighlightLetters   = "xqzjy"
+	defaultLexisFilePath      = "wordList"
 
+	//Constants not related to config values
+	configFile           = "config.conf"
+	longestWordLength    = 16
+	maxWordColumnsPerRow = 16
+)
+
+//Configuration values needed by other packages
 var (
 	//MaxWordLength ...
 	MaxWordLength = defaultMaxWordLength
@@ -45,12 +53,6 @@ type config struct {
 	HighlightLetters   string
 	LexisFilePath      string
 }
-
-const configFile = "config.conf"
-
-//Other constants
-const longestWordLength = 16
-const maxWordColumnsPerRow = 16
 
 var loadedConfig config
 
@@ -108,16 +110,15 @@ func validateConfig() {
 
 //ReadConfig ...
 func ReadConfig() {
-	_, err := os.Stat(configFile)
+	file, err := os.Stat(configFile)
 
-	if err != nil {
+	if err != nil || !file.Mode().IsRegular() {
 		fmt.Fprintf(os.Stderr, "Config file missing: \"%s\". Using default configuration.", configFile)
 	}
 
 	if _, err := toml.DecodeFile(configFile, &loadedConfig); err != nil {
 		fmt.Fprintf(os.Stderr, "Error reading config file: %s.\nUsing default configuration.", err)
 		loadedConfig = defaultConfig
-		return
 	}
 	validateConfig()
 }
