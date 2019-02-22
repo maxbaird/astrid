@@ -109,6 +109,15 @@ func printWord(pc printColumn, wordIdx int, endColumn bool) {
 	}
 }
 
+func calculateNumberOfSeparators() int {
+	var sum int
+	for _, pc := range printColumns {
+		sum = sum + pc.longestWordLen
+	}
+
+	return sum + (16 * spaceBetweenColumns)
+}
+
 //PrintWords ...
 func PrintWords(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 	makePrintColumns(board, wordColumns)
@@ -151,7 +160,9 @@ func PrintWords(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 		}
 	}
 
-	for i := 0; i < (longestWordLen+spaceBetweenColumns)*colsPerRow; i++ {
+	numSeparator := calculateNumberOfSeparators()
+
+	for i := 0; i < numSeparator; i++ {
 		fmt.Print("+")
 	}
 	fmt.Printf("\n\n")
