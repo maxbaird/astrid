@@ -30,10 +30,13 @@ type printColumn struct {
 	longestWordLen int
 }
 
-const spaceBetweenColumns int = 2
+const (
+	spaceBetweenColumns int = 2
+)
 
-var printColumns []printColumn
-var longestWordLen int
+var (
+	printColumns []printColumn
+)
 
 func makePrintColumns(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 	printColumns = make([]printColumn, board.Size)
@@ -60,14 +63,6 @@ func makePrintColumns(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 		}(&printColumns[i], wc)
 	}
 	wg.Wait()
-}
-
-func findLongestWord() {
-	for _, pc := range printColumns {
-		if pc.longestWordLen > longestWordLen {
-			longestWordLen = pc.longestWordLen
-		}
-	}
 }
 
 func pad(pc printColumn, length int) int {
@@ -117,7 +112,6 @@ func printWord(pc printColumn, wordIdx int, endColumn bool) {
 //PrintWords ...
 func PrintWords(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 	makePrintColumns(board, wordColumns)
-	findLongestWord()
 
 	colsPerRow := config.WordColumnsPerRow
 	maxWordsPerRow := config.MaxWordsPerRow
