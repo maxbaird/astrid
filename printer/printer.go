@@ -70,8 +70,8 @@ func findLongestWord() {
 	}
 }
 
-func pad(length int) int {
-	return (longestWordLen - length) + spaceBetweenColumns
+func pad(pc printColumn, length int) int {
+	return (pc.longestWordLen - length) + spaceBetweenColumns
 }
 
 func printColumnHeaders(start int, end int) {
@@ -79,7 +79,7 @@ func printColumnHeaders(start int, end int) {
 
 	for i := start; i < end; i++ {
 		str := fmt.Sprintf("[%d]", i+1)
-		c.Printf("%s%*s", str, pad(len(str)), "")
+		c.Printf("%s%*s", str, pad(printColumns[i], len(str)), "")
 	}
 	fmt.Println()
 }
@@ -96,11 +96,12 @@ func getLongestColumn(start int, end int) int {
 	return count
 }
 
-func printWord(word string, endColumn bool) {
+func printWord(pc printColumn, wordIdx int, endColumn bool) {
 	var padding int
+	word := pc.words[wordIdx]
 
 	if !endColumn {
-		padding = pad(len(word))
+		padding = pad(pc, len(word))
 	}
 
 	str := fmt.Sprintf("%s%*s", word, padding, "")
@@ -140,9 +141,9 @@ func PrintWords(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 
 			for k := colHeaderStart; k < colHeaderEnd; k++ {
 				if printColumns[k].wordCount > j {
-					printWord(printColumns[k].words[j], k == (colHeaderEnd-1))
-				} else {
-					fmt.Printf("%*s", pad(0), "")
+					printWord(printColumns[k], j, k == (colHeaderEnd-1))
+				} else { //If there are no words to print
+					fmt.Printf("%*s", pad(printColumns[k], 0), "")
 				}
 			}
 			fmt.Println()
