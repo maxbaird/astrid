@@ -111,11 +111,26 @@ func printWord(pc printColumn, wordIdx int, endColumn bool) {
 
 func calculateNumberOfSeparators() int {
 	var sum int
+	var widest int
+	i := 1
+
+	// This loop determines the greatest horizontal space
+	// taken up by a set of word columns
 	for _, pc := range printColumns {
 		sum = sum + pc.longestWordLen
+
+		if i == config.WordColumnsPerRow {
+			if widest < sum {
+				widest = sum
+			}
+			sum = 0
+			i = 0
+		}
+
+		i++
 	}
 
-	return sum + (16 * spaceBetweenColumns)
+	return widest + (config.WordColumnsPerRow * spaceBetweenColumns)
 }
 
 //PrintWords ...
@@ -162,8 +177,6 @@ func PrintWords(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 
 	numSeparator := calculateNumberOfSeparators()
 
-	for i := 0; i < numSeparator; i++ {
-		fmt.Print("+")
-	}
-	fmt.Printf("\n\n")
+	s := strings.Repeat("+", numSeparator)
+	fmt.Printf("%s\n\n", s)
 }
