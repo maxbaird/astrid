@@ -31,7 +31,8 @@ type printColumn struct {
 }
 
 const (
-	spaceBetweenColumns int = 2
+	spaceBetweenColumns   int = 2
+	defaultLongestWordLen int = 4
 )
 
 var (
@@ -66,6 +67,9 @@ func makePrintColumns(board *board.Board, wordColumns []wordcolumn.WordColumn) {
 }
 
 func pad(pc printColumn, length int) int {
+	if pc.wordCount == 0 {
+		pc.longestWordLen = defaultLongestWordLen
+	}
 	return (pc.longestWordLen - length) + spaceBetweenColumns
 }
 
